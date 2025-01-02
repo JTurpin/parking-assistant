@@ -28,10 +28,10 @@ An ESP32-based parking assistant that helps guide your car to the perfect parkin
           | GND   --- GND       | (shared ground)
           | GPIO5  --- Data In  | (to WS2811 LED strip Data In)
           +----------------------+
-                  
-                  
+          
+          
                 +---------------------+
-VL53L0X Sensor: |       VL53L0X      |
+                |       VL53L0X      |
                 | VCC  <--- 3.3V     |
                 | GND  <--- GND      |
                 | SDA  <--- GPIO21   |
@@ -40,8 +40,8 @@ VL53L0X Sensor: |       VL53L0X      |
 
 
                 +---------------------+
-WS2811 LED Strip |    WS2811 Strip    |
-  (start/input): | Data In <--- GPIO5 |
+                |    WS2811 Strip     | 
+                | Data In <--- GPIO5  |
                 | VCC     <--- 5V     |
                 | GND     <--- GND    |
                 +---------------------+
