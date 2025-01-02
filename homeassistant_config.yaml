@@ -1,0 +1,45 @@
+# Home Assistant MQTT Sensor Configuration
+# Replace {garage_name} with your configured garage name (e.g., main_garage, left_garage)
+
+mqtt:
+  sensor:
+    - name: "{{ garage_name }} Parking Distance"
+      state_topic: "homeassistant/{{ garage_name }}/parking/distance"
+      unique_id: "{{ garage_name }}_parking_distance"
+      unit_of_measurement: "m"
+      icon: "mdi:car-arrow-right"
+      
+    - name: "{{ garage_name }} Parking State"
+      state_topic: "homeassistant/{{ garage_name }}/parking/state"
+      unique_id: "{{ garage_name }}_parking_state"
+      icon: "mdi:car-parking-lights"
+
+  binary_sensor:
+    - name: "Car In {{ garage_name }}"
+      state_topic: "homeassistant/{{ garage_name }}/parking/state"
+      unique_id: "{{ garage_name }}_car_present"
+      payload_on: "PARKED"
+      payload_off: "GONE"
+      device_class: presence
+
+# Example automation for notifications
+automation:
+  - alias: "{{ garage_name }} Parking Too Close Warning"
+    trigger:
+      platform: state
+      entity_id: sensor.{{ garage_name }}_parking_state
+      to: "TOO_CLOSE"
+    action:
+      - service: notify.mobile_app
+        data:
+          message: "Warning: Car is too close to the wall in {{ garage_name }}!"
+          
+  - alias: "Car Parked Successfully in {{ garage_name }}"
+    trigger:
+      platform: state
+      entity_id: sensor.{{ garage_name }}_parking_state
+      to: "PARKED"
+    action:
+      - service: notify.mobile_app
+        data:
+          message: "Car successfully parked in {{ garage_name }}"

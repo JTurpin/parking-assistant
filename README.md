@@ -63,10 +63,46 @@ If you encounter flickering or signal issues, consider adding a level shifter be
 - Arduino IDE
 - Libraries:
   - WiFi.h
+  - WiFiManager
   - PubSubClient (MQTT)
   - Adafruit_VL53L0X
   - FastLED
   - ArduinoJson
+
+## Installation
+1. Wire the components according to the wiring diagram
+2. Install required libraries in Arduino IDE:
+   - In Arduino IDE, go to Tools → Manage Libraries
+   - Search for and install:
+     - WiFiManager by tzapu
+     - PubSubClient
+     - Adafruit_VL53L0X
+     - FastLED
+     - ArduinoJson
+3. Update MQTT credentials in the code
+4. Flash the ESP32
+5. Mount the device on the wall
+
+## First-Time Setup
+1. Power on the device
+2. The LED strip will show a blue breathing pattern indicating AP (Access Point) mode
+3. On your phone or computer, connect to the WiFi network named "ParkingAssistant-XXXXXX"
+4. A configuration portal will automatically open (or navigate to 192.168.4.1)
+5. Enter your configuration:
+   - Select your WiFi network
+   - Enter the WiFi password
+   - Enter a unique name for your garage (e.g., "main_garage", "left_garage", etc.)
+6. Click Save
+7. The device will save these credentials and automatically reconnect on future power-ups
+
+## LED Status Indicators
+- Blue breathing pattern: WiFi configuration mode (AP mode)
+- Yellow breathing pattern: MQTT disconnected
+- Normal operation patterns:
+  - Off: Car Gone
+  - Moving blue: Car Approaching
+  - Solid green: Car Parked
+  - Flashing red: Too Close
 
 ## States
 1. Car Gone (>2m): LEDs off
@@ -75,17 +111,10 @@ If you encounter flickering or signal issues, consider adding a level shifter be
 4. Too Close (<0.7m): Red flashing
 
 ## MQTT Topics
-- `garage/parking/distance` - Current distance in meters
-- `garage/parking/state` - Current state (GONE, APPROACHING, PARKED, TOO_CLOSE)
-- `garage/parking/status` - Device status and connectivity
-
-## Installation
-1. Wire the components according to the wiring diagram
-2. Install required libraries in Arduino IDE
-3. Update WiFi and MQTT credentials in the code
-4. Flash the ESP32
-5. Mount the device on the wall
-6. Add the provided configuration to Home Assistant
+All MQTT topics are prefixed with your garage name:
+- `homeassistant/{garage_name}/parking/distance` - Current distance in meters
+- `homeassistant/{garage_name}/parking/state` - Current state (GONE, APPROACHING, PARKED, TOO_CLOSE)
+- `homeassistant/{garage_name}/parking/status` - Device status and connectivity
 
 ## Configuration
 See the `config` directory for Home Assistant configuration examples.
