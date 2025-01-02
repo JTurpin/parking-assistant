@@ -117,4 +117,4 @@ All MQTT topics are prefixed with your garage name:
 - `homeassistant/{garage_name}/parking/status` - Device status and connectivity
 
 ## Configuration
-See the `config` directory for Home Assistant configuration examples.
+See the `homeassistant_config.yaml` file for Home Assistant configuration examples.
